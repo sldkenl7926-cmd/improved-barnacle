@@ -59,7 +59,7 @@ def paper(seed, lines, stamp=None, big=None):
     d.rectangle([px0, py0, px1, py1], fill=(226,214,186))
     for _ in range(4000):
         x, y = random.randint(px0, px1), random.randint(py0, py1); d.point((x, y), fill=(205,192,160))
-    ctext(d, py0+70, "命 令", f(110, FM), (60,40,30))
+    ctext(d, py0+70, "명  령", f(110, FM), (60,40,30))
     d.line([px0+80, py0+230, px1-80, py0+230], fill=(90,70,50), width=3)
     y = py0+290
     for ln in lines:
@@ -74,11 +74,11 @@ def paper(seed, lines, stamp=None, big=None):
         st = st.rotate(-14, expand=True); im.paste(st, (560, 900), st)
     return im, d
 
-im, d = paper(4, [None, None, None, "단 하나", None, None, None], stamp="極秘")
+im, d = paper(4, [None, None, None, "단 하나", None, None, None], stamp="극비")
 d.text((200, 1350), "", font=f(10)); tag(d, "재구성")
 save(im, "S04_order")
 im, d = paper(5, ["항복 금지", "", "자결 금지"])
-for yy in (420, 680):
+for yy in (545, 805):
     d.rounded_rectangle([230, yy-25, 850, yy+120], 12, outline=RED, width=8)
 tag(d, "재구성"); save(im, "S05_order_detail")
 
@@ -89,14 +89,11 @@ save(im, "S06_fallback")
 
 def jungle(im, seed):
     random.seed(seed); d = ImageDraw.Draw(im)
-    for layer, col in [(0, (16,34,26)), (1, (10,24,18))]:
-        for i in range(14):
-            x = random.randint(-100, W+100); h = random.randint(380, 700) - layer*80
-            for k in range(7):
-                ang = -math.pi/2 + (k-3)*0.38
-                ex, ey = x + math.cos(ang)*260, H-h + math.sin(ang)*-1*-160 + 40
-                d.line([(x, H), (x, H-h), (ex, ey+abs(k-3)*50)], fill=col, width=26 - layer*6)
-        d.rectangle([0, H-260+layer*60, W, H], fill=col)
+    for layer, (col, base_y, n) in enumerate([((22,46,34), 1450, 22), ((14,32,24), 1560, 26), ((8,20,15), 1680, 30)]):
+        for i in range(n):
+            x = random.randint(-80, W+80); r = random.randint(90, 170); y = base_y + random.randint(-60, 60)
+            d.ellipse([x-r, y-r, x+r, y+r], fill=col)
+        d.rectangle([0, base_y, W, H], fill=col)
 
 def leaflet(text, rot, scale=1.0):
     lw, lh = int(420*scale), int(300*scale)

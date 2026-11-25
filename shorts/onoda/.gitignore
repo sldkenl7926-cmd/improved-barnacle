@@ -1,0 +1,2 @@
+build/*
+!build/preview_no_voice.mp4

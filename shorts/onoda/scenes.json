@@ -1,0 +1,148 @@
+[
+ {
+  "id": "S01",
+  "img": "photos/S01_onoda_surrender_1974.jpg",
+  "type": "photo",
+  "say": "종전 이십구 년 뒤에 항복한 군인.",
+  "sub": "29년 늦게 항복한 군인",
+  "hl": "29년",
+  "sfx": "impact"
+ },
+ {
+  "id": "S02",
+  "img": "diagrams/S02_map_lubang.png",
+  "type": "card",
+  "say": "필리핀 루방섬의 정글.",
+  "sub": "필리핀 루방섬 정글",
+  "hl": "루방섬"
+ },
+ {
+  "id": "S03",
+  "img": "photos/S03_onoda_young.jpg",
+  "type": "photo",
+  "say": "일본군 소위 오노다 히로.",
+  "sub": "일본군 소위 오노다 히로",
+  "hl": "오노다 히로"
+ },
+ {
+  "id": "S04",
+  "img": "diagrams/S04_order.png",
+  "type": "card",
+  "say": "받은 명령은 단 하나.",
+  "sub": "명령은 단 하나",
+  "hl": "단 하나"
+ },
+ {
+  "id": "S05",
+  "img": "diagrams/S05_order_detail.png",
+  "type": "card",
+  "say": "항복도 자결도 하지 마라.",
+  "sub": "항복도 자결도 금지",
+  "hl": "금지"
+ },
+ {
+  "id": "S06",
+  "img": "photos/S06_japan_surrender_1945.jpg",
+  "type": "photo",
+  "say": "일본은 이미 항복했지만,",
+  "sub": "1945 일본 항복",
+  "hl": "항복"
+ },
+ {
+  "id": "S07",
+  "img": "diagrams/S07_leaflets.png",
+  "type": "card",
+  "say": "정글에 종전 전단이 뿌려졌다.",
+  "sub": "정글에 뿌려진 종전 전단",
+  "hl": "종전 전단"
+ },
+ {
+  "id": "S08",
+  "img": "diagrams/S08_trap.png",
+  "type": "card",
+  "say": "그는 적의 속임수라 믿었다.",
+  "sub": "\"적의 속임수다\"",
+  "hl": "속임수"
+ },
+ {
+  "id": "S09",
+  "img": "diagrams/S09_comrades.png",
+  "type": "card",
+  "say": "동료들은 하나둘 죽거나 떠났고,",
+  "sub": "동료들은 죽거나 떠났다",
+  "hl": "죽거나 떠났다"
+ },
+ {
+  "id": "S10",
+  "img": "diagrams/S10_victims.png",
+  "type": "card",
+  "say": "섬 주민 약 삼십 명이 희생됐다.",
+  "sub": "주민 약 30명 희생",
+  "hl": "30명"
+ },
+ {
+  "id": "S11",
+  "img": "diagrams/S11_not_army.png",
+  "type": "card",
+  "say": "그런데 그를 찾아낸 건 군대가 아니었다.",
+  "sub": "그런데, 군대가 아니었다",
+  "hl": "군대",
+  "sfx": "reversal"
+ },
+ {
+  "id": "S12",
+  "img": "diagrams/S12_suzuki.png",
+  "type": "card",
+  "say": "스물네 살 여행자, 스즈키 노리오.",
+  "sub": "24살 여행자 스즈키 노리오",
+  "hl": "스즈키 노리오"
+ },
+ {
+  "id": "S13",
+  "img": "diagrams/S13_quote.png",
+  "type": "card",
+  "say": "상관 명령 없인 못 나간다.",
+  "sub": "\"명령 없인 못 나간다\"",
+  "hl": "명령"
+ },
+ {
+  "id": "S14",
+  "img": "diagrams/S14_route.png",
+  "type": "card",
+  "say": "스즈키는 옛 상관을 찾아냈다.",
+  "sub": "옛 상관을 찾아서",
+  "hl": "옛 상관"
+ },
+ {
+  "id": "S15",
+  "img": "diagrams/S15_taniguchi.png",
+  "type": "card",
+  "say": "서점 주인이 된 다니구치 전 소령.",
+  "sub": "서점 주인 다니구치 전 소령",
+  "hl": "서점 주인"
+ },
+ {
+  "id": "S16",
+  "img": "diagrams/S16_date.png",
+  "type": "card",
+  "say": "그가 정글로 와 임무를 해제했다.",
+  "sub": "1974.3.9 임무 해제",
+  "hl": "임무 해제"
+ },
+ {
+  "id": "S17",
+  "img": "photos/S17_marcos_onoda_1974.jpg",
+  "type": "photo",
+  "say": "그제야 오노다는 칼을 내려놓았다.",
+  "sub": "29년 만에 칼을 내려놓다",
+  "hl": "칼"
+ },
+ {
+  "id": "S18",
+  "img": "diagrams/S18_loop.png",
+  "type": "card",
+  "say": "단 한 줄의 명령을 기다리다,",
+  "sub": "명령 한 줄을 기다리다",
+  "hl": "명령 한 줄"
+ }
+]
