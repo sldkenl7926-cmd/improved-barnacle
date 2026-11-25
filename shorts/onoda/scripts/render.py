@@ -89,12 +89,16 @@ for fi in range(nframes):
     t = fi / FPS; k = max(0, min(len(scenes)-1, int(np.searchsorted(bounds, t, side="right")) - 1))
     p = (t - bounds[k]) / (bounds[k+1] - bounds[k]); fg, bg, sub = pre[k]; s_kind = scenes[k]['type']
     z = 1.0 + 0.07 * p if k % 2 == 0 else 1.07 - 0.07 * p          # alternate zoom in / out
+    dt = t - bounds[k]; z += 0.10 * max(0.0, 1 - dt / 0.18) ** 2    # punch-in on each cut
     if bg is None:
         cw, ch = W / z, H / z; dx = (W - cw) / 2 + (18 * (p - .5) if k % 3 == 1 else 0)
         frame = fg.crop((dx, (H-ch)/2, dx+cw, (H-ch)/2+ch)).resize((W, H), Image.BILINEAR)
     else:
         frame = bg.copy(); f2 = fg.resize((int(fg.width*z), int(fg.height*z)), Image.BILINEAR)
         frame.paste(f2, ((W - f2.width)//2, 860 - f2.height//2)) if s_kind != 'fill' else frame.paste(f2.crop(((f2.width-1080)//2, (f2.height-950)//2, (f2.width-1080)//2+1080, (f2.height-950)//2+950)), (0, 385))
+    if scenes[k].get("sfx") and dt < 0.35:   # shake on impact
+        amp = 18 * (1 - dt / 0.35); ox, oy = int(amp * math.sin(dt * 90)), int(amp * math.cos(dt * 70))
+        frame = frame.transform((W, H), Image.AFFINE, (1, 0, ox, 0, 1, oy))
     # pop-in subtitle
     a = min(1, (t - bounds[k]) / 0.12); sc = 0.9 + 0.1 * a
     sl = sub if sc >= 0.999 else sub.resize((int(W*sc), int(360*sc)))

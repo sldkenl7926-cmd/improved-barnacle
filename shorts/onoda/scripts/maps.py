@@ -34,10 +34,11 @@ f, ax = fig()
 m = Basemap(projection="merc", llcrnrlon=112, llcrnrlat=8, urcrnrlon=142, urcrnrlat=38, resolution="i", ax=ax)
 m.fillcontinents(color=LAND, lake_color=SEA); m.drawcoastlines(color="#5a6785", linewidth=0.6)
 x1, y1 = m(*LUB); x2, y2 = m(131.0, 32.5)
-ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
+ax.annotate("", xy=(x1, y1), xytext=(x2, y2),
             arrowprops=dict(arrowstyle="-|>,head_width=0.8,head_length=1.4", color=RED, lw=6,
-                            connectionstyle="arc3,rad=-0.25", linestyle="--"), zorder=6)
-for (xx, yy), lab, dx, dy in [((x1, y1), "루방섬", 120000, -330000), ((x2, y2), "일본 규슈", 60000, -420000)]:
+                            connectionstyle="arc3,rad=0.25", linestyle="--"), zorder=6)
+ax.text(x2-1500000, y2-260000, "(서점 주인)", fontproperties=F, fontsize=36, color="#ff8a8a", zorder=8)
+for (xx, yy), lab, dx, dy in [((x1, y1), "루방섬", 120000, -330000), ((x2, y2), "다니구치 전 소령", -1500000, 150000)]:
     ax.scatter(xx, yy, s=260, color=RED, edgecolor="white", linewidth=2, zorder=7)
     ax.text(xx+dx, yy+dy, lab, fontproperties=F, fontsize=44, color="white", zorder=8)
 f.savefig(f"{out}/map_route.png", facecolor=SEA); plt.close(f)
