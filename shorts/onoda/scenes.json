@@ -1,16 +1,22 @@
 [
  {
   "id": "S01",
-  "img": "photos/S01_onoda_surrender_1974.jpg",
-  "type": "photo",
+  "img": "photos/S03_onoda_young.jpg",
+  "type": "fill",
   "say": "종전 이십구 년 뒤에 항복한 군인.",
   "sub": "29년 늦게 항복한 군인",
   "hl": "29년",
-  "sfx": "impact"
+  "sfx": "impact",
+  "crop": [
+   0.0,
+   0.08,
+   1.0,
+   0.92
+  ]
  },
  {
   "id": "S02",
-  "img": "diagrams/S02_map_lubang.png",
+  "img": "diagrams/S02_lubang.png",
   "type": "card",
   "say": "필리핀 루방섬의 정글.",
   "sub": "필리핀 루방섬 정글",
@@ -18,11 +24,17 @@
  },
  {
   "id": "S03",
-  "img": "photos/S03_onoda_young.jpg",
+  "img": "photos/X_onoda_brother_1944.jpg",
   "type": "photo",
   "say": "일본군 소위 오노다 히로.",
   "sub": "일본군 소위 오노다 히로",
-  "hl": "오노다 히로"
+  "hl": "오노다 히로",
+  "crop": [
+   0.42,
+   0.0,
+   1.0,
+   0.62
+  ]
  },
  {
   "id": "S04",
@@ -66,8 +78,8 @@
  },
  {
   "id": "S09",
-  "img": "diagrams/S09_comrades.png",
-  "type": "card",
+  "img": "photos/X_kozuka.jpg",
+  "type": "photo",
   "say": "동료들은 하나둘 죽거나 떠났고,",
   "sub": "동료들은 죽거나 떠났다",
   "hl": "죽거나 떠났다"
@@ -84,18 +96,18 @@
   "id": "S11",
   "img": "diagrams/S11_not_army.png",
   "type": "card",
-  "say": "그런데 그를 찾아낸 건 군대가 아니었다.",
+  "say": "그런데 그를 찾은 건 군대가 아니었다.",
   "sub": "그런데, 군대가 아니었다",
   "hl": "군대",
   "sfx": "reversal"
  },
  {
   "id": "S12",
-  "img": "diagrams/S12_suzuki.png",
+  "img": "diagrams/S12_suzuki_list.png",
   "type": "card",
-  "say": "스물네 살 여행자, 스즈키 노리오.",
-  "sub": "24살 여행자 스즈키 노리오",
-  "hl": "스즈키 노리오"
+  "say": "오노다, 판다, 설인 순으로 찾겠다던 스물네 살 청년.",
+  "sub": "판다·설인 찾던 24살 청년",
+  "hl": "판다·설인"
  },
  {
   "id": "S13",
@@ -115,7 +127,7 @@
  },
  {
   "id": "S15",
-  "img": "diagrams/S15_taniguchi.png",
+  "img": "diagrams/S15_books.png",
   "type": "card",
   "say": "서점 주인이 된 다니구치 전 소령.",
   "sub": "서점 주인 다니구치 전 소령",

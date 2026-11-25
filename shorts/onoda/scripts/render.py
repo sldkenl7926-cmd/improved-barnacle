@@ -35,13 +35,22 @@ else:
 total = bounds[-1]; print("total %.2fs" % total, ["%.2f" % (bounds[i+1]-bounds[i]) for i in range(len(scenes))])
 
 # ---- visuals ----
-def fg_bg(path, kind):
+def fg_bg(path, kind, crop=None):
     im = Image.open(path).convert("RGB")
+    if crop and kind == "photo":
+        x0, y0, x1, y1 = crop; im = im.crop((int(x0*im.width), int(y0*im.height), int(x1*im.width), int(y1*im.height)))
     if kind == "card": return im.resize((W, H)), None
     bg = im.copy(); s = max(W / bg.width, H / bg.height); bg = bg.resize((int(bg.width*s)+2, int(bg.height*s)+2))
     bg = bg.crop(((bg.width-W)//2, (bg.height-H)//2, (bg.width-W)//2+W, (bg.height-H)//2+H)).filter(ImageFilter.GaussianBlur(40))
     bg = Image.blend(bg, Image.new("RGB", (W, H), (0, 0, 0)), 0.45)
-    s = min(1000 / im.width, 1150 / im.height); fg = im.resize((int(im.width*s), int(im.height*s)), Image.LANCZOS)
+    if kind == "fill":   # crop (fractions) and fill the whole picture zone: hook close-ups
+        x0, y0, x1, y1 = crop
+        im = im.crop((int(x0*im.width), int(y0*im.height), int(x1*im.width), int(y1*im.height)))
+        tw, th = 1080, 950; s = max(tw / im.width, th / im.height)
+        im = im.resize((int(im.width*s)+1, int(im.height*s)+1), Image.LANCZOS)
+        fg = im.crop(((im.width-tw)//2, (im.height-th)//2, (im.width-tw)//2+tw, (im.height-th)//2+th)).filter(ImageFilter.UnsharpMask(2, 80, 2))
+        return fg, bg
+    s = min(1040 / im.width, 940 / im.height); fg = im.resize((int(im.width*s), int(im.height*s)), Image.LANCZOS)
     return fg, bg
 
 FONT = ImageFont.truetype(FB, 84)
@@ -63,27 +72,33 @@ def subtitle_layer(text, hl):
         y += 110
     return lay
 
+TITLE = json.load(open("title.json")) if os.path.exists("title.json") else None
+band = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+if TITLE:
+    bd = ImageDraw.Draw(band); bd.rectangle([0, 0, W, 375], fill=(0, 0, 0, 235)); TF = ImageFont.truetype(FB, 96)
+    for i, (ln, col) in enumerate(TITLE):
+        bd.text(((W - bd.textlength(ln, font=TF)) / 2, 90 + i * 118), ln, font=TF, fill=tuple(col), stroke_width=3, stroke_fill=(0,0,0))
 pre = []
 for i, s in enumerate(scenes):
-    fg, bg = fg_bg(s["img"], s["type"]); pre.append((fg, bg, subtitle_layer(s["sub"], s.get("hl"))))
+    fg, bg = fg_bg(s["img"], s["type"], s.get("crop")); pre.append((fg, bg, subtitle_layer(s["sub"], s.get("hl"))))
 
 ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                        "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", f"{BUILD}/video.mp4"], stdin=subprocess.PIPE)
 nframes = int(math.ceil(total * FPS))
 for fi in range(nframes):
     t = fi / FPS; k = max(0, min(len(scenes)-1, int(np.searchsorted(bounds, t, side="right")) - 1))
-    p = (t - bounds[k]) / (bounds[k+1] - bounds[k]); fg, bg, sub = pre[k]
+    p = (t - bounds[k]) / (bounds[k+1] - bounds[k]); fg, bg, sub = pre[k]; s_kind = scenes[k]['type']
     z = 1.0 + 0.07 * p if k % 2 == 0 else 1.07 - 0.07 * p          # alternate zoom in / out
     if bg is None:
         cw, ch = W / z, H / z; dx = (W - cw) / 2 + (18 * (p - .5) if k % 3 == 1 else 0)
         frame = fg.crop((dx, (H-ch)/2, dx+cw, (H-ch)/2+ch)).resize((W, H), Image.BILINEAR)
     else:
         frame = bg.copy(); f2 = fg.resize((int(fg.width*z), int(fg.height*z)), Image.BILINEAR)
-        frame.paste(f2, ((W - f2.width)//2, 820 - f2.height//2))
+        frame.paste(f2, ((W - f2.width)//2, 860 - f2.height//2)) if s_kind != 'fill' else frame.paste(f2.crop(((f2.width-1080)//2, (f2.height-950)//2, (f2.width-1080)//2+1080, (f2.height-950)//2+950)), (0, 385))
     # pop-in subtitle
     a = min(1, (t - bounds[k]) / 0.12); sc = 0.9 + 0.1 * a
     sl = sub if sc >= 0.999 else sub.resize((int(W*sc), int(360*sc)))
-    frame = frame.convert("RGBA"); frame.alpha_composite(sl, ((W - sl.width)//2, 1330 + (360 - sl.height)//2)); frame = frame.convert("RGB")
+    frame = frame.convert("RGBA"); frame.alpha_composite(band); frame.alpha_composite(sl, ((W - sl.width)//2, 1345 + (360 - sl.height)//2)); frame = frame.convert("RGB")
     if t < 0.08: frame = Image.blend(frame, Image.new("RGB", (W, H), (255, 255, 255)), 0.6 * (1 - t / 0.08))  # hook flash
     ff.stdin.write(frame.tobytes())
 ff.stdin.close(); ff.wait()

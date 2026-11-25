@@ -30,7 +30,7 @@
 - 반전: S11 "그런데…" (약 52% 지점)
 - 엔딩: S18 "단 한 줄의 명령을 기다리다," → S01 "종전 29년 뒤에 항복한 군인."으로 이어지는 루프
 
-## 내레이션 원고 (TTS에 그대로 붙여넣기)
+## 내레이션 원고 (TTS에 그대로 붙여넣기, 한 줄 = 한 장면)
 ```
 종전 이십구 년 뒤에 항복한 군인.
 필리핀 루방섬의 정글.
@@ -42,8 +42,8 @@
 그는 적의 속임수라 믿었다.
 동료들은 하나둘 죽거나 떠났고,
 섬 주민 약 삼십 명이 희생됐다.
-그런데 그를 찾아낸 건 군대가 아니었다.
-스물네 살 여행자, 스즈키 노리오.
+그런데 그를 찾은 건 군대가 아니었다.
+오노다, 판다, 설인 순으로 찾겠다던 스물네 살 청년.
 상관 명령 없인 못 나간다.
 스즈키는 옛 상관을 찾아냈다.
 서점 주인이 된 다니구치 전 소령.
@@ -53,10 +53,11 @@
 ```
 
 ## 실제 사진 출처 (Wikimedia Commons, 모두 Public domain)
-- S01 `File:Hirō Onoda surrender 1974.jpg`
-- S03 `File:Hiroo Onoda young.jpg`
+- S01 `File:Hiroo Onoda young.jpg` (얼굴 클로즈업 훅)
 - S06 `File:JapaneseSurrender.jpg` (1945-09-02, 미 해군)
 - S17 `File:President Marcos and Hiroo Onoda.jpg`
+- S03 `File:Hiroo and shigeo onoda 1944.jpg` (오노다 부분만 크롭)
+- S09 `File:Kozuka kinshichi.jpg`
 
 나머지 장면은 직접 그린 지도·도해(`diagrams/`)이며, 재구성 이미지에는 화면에 '재구성/일러스트' 표기가 있습니다.
 
