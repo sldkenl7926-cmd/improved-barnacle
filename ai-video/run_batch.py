@@ -6,6 +6,7 @@ run_batch.py - ComfyUI(로컬, --lowvram) 로 Image-to-Video 배치 렌더링
   jobs/
     cat.png            <- 이미지 (png/jpg/jpeg/webp)
     cat.txt            <- 같은 이름의 모션 프롬프트 (없으면 --default-prompt 사용)
+    cat.h3.txt         <- (선택) 모델별 프롬프트. --model h3 일 때 cat.txt 보다 우선
     prompts.csv        <- (선택) image,prompt[,negative,seconds,width,height,seed] 형식. txt 보다 우선
 
 사용 예
@@ -206,7 +207,7 @@ class Comfy:
         return saved
 
 # ------------------------------------------------------------------ 작업 수집
-def collect_jobs(folder, default_prompt):
+def collect_jobs(folder, default_prompt, model=None):
     folder = Path(folder)
     jobs = []
     csv_path = folder / "prompts.csv"
@@ -221,7 +222,9 @@ def collect_jobs(folder, default_prompt):
         return jobs
     for img in sorted(folder.iterdir()):
         if img.suffix.lower() in IMG_EXT:
-            txt = img.with_suffix(".txt")
+            txt = img.with_suffix(f".{model}.txt") if model else None   # 모델별 프롬프트 우선 (예: cat.h3.txt)
+            if not (txt and txt.exists()):
+                txt = img.with_suffix(".txt")
             prompt = txt.read_text(encoding="utf-8").strip() if txt.exists() else default_prompt
             jobs.append({"image": img, "prompt": prompt})
     return jobs
@@ -257,6 +260,7 @@ def main():
     ap.add_argument("--test", action="store_true", help="샘플 이미지로 1클립 테스트")
     ap.add_argument("--model", choices=MODELS, default="wan22", help="wan22(빠름) / h3(고퀄, 느림)")
     ap.add_argument("--res", choices=["480p", "720p"], default="480p")
+    ap.add_argument("--landscape", action="store_true", help="세로 이미지도 가로 해상도로 강제")
     ap.add_argument("--seconds", type=float, default=2.5, help="클립 길이(초) - 24fps, 4n+1 프레임으로 맞춤")
     ap.add_argument("--steps", type=int, default=0, help="0 = 모델 기본값 (wan22 20, h3 Turbo 8)")
     ap.add_argument("--no-turbo", action="store_true", help="h3: Turbo LoRA 끄기 (steps 20 권장, 매우 느림)")
@@ -286,7 +290,7 @@ def main():
 
     out_dir = Path(a.out) if a.out else folder / "_out"
     out_dir.mkdir(parents=True, exist_ok=True)
-    jobs = collect_jobs(folder, a.default_prompt)
+    jobs = collect_jobs(folder, a.default_prompt, a.model)
     if not jobs:
         sys.exit("처리할 이미지가 없습니다.")
     print(f"{len(jobs)}개 작업")
@@ -296,6 +300,14 @@ def main():
     results = []
     for i, job in enumerate(jobs, 1):
         w, h = res_map[a.res]
+        if not a.landscape:
+            try:  # 세로 사진(쇼츠 9:16)이면 해상도도 세로로
+                from PIL import Image
+                with Image.open(job["image"]) as im:
+                    if im.height > im.width:
+                        w, h = h, w
+            except Exception:
+                pass
         if job.get("width") and job.get("height"):
             w, h = int(job["width"]), int(job["height"])
         secs = float(job.get("seconds") or a.seconds)
