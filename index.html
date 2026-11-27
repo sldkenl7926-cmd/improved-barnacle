@@ -910,9 +910,10 @@ function boot(){
     toast("내보냈어요 (downloads 폴더)");
   };
   $("#btnClear").onclick = ()=>{
-    if(!confirm("이 기기에 저장된 대화·상태를 지웁니다. 서버(12시간)에는 남아 있어 다시 받아옵니다. 계속할까요?")) return;
-    S.log=[]; S.status={}; S.meetings=[]; S.tasks=[]; seenIds.clear(); save();
-    renderLog(); renderDesks(); renderMeetings(); paintDbInfo(); toast("지웠습니다");
+    if(!confirm("이 기기에 저장된 대화·상태·채널 금액을 지웁니다. 서버(12시간)에는 남아 있어 대화는 다시 받아옵니다. 계속할까요?")) return;
+    S.log=[]; S.status={}; S.meetings=[]; S.tasks=[]; S.channels={}; S.seen=0; seenIds.clear(); save();
+    renderLog(); renderDesks(); renderMeetings(); renderChannels(); renderGoal(); renderRecent(); paintDbInfo();
+    toast("지웠습니다");
   };
 
   renderFilters(); renderDesks(); renderLog(); renderChannels(); renderGoal(); renderMeetings(); renderRecent();
