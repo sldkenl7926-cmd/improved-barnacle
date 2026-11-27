@@ -621,7 +621,7 @@ function renderLog(){
     const a = AGENTS[m.from] || {emoji:"💬", name:m.name};
     const mine = m.from===meIs();
     const cls = ["msg", mine?"mine":"", m.pending?"pending":"", m.fail?"fail":""].join(" ");
-    const toTxt = (m.to&&m.to.length) ? " · "+m.to.map(t=>"@"+((AGENTS[t]||{}).short||t)).join(" ") : "";
+    const toTxt = (m.to&&m.to.length) ? " · "+m.to.map(t=> t==="all" ? "@전체" : "@"+((AGENTS[t]||{}).short||t)).join(" ") : "";
     out += `<div class="${cls}">
       ${mine?"":`<div class="av">${a.emoji}</div>`}
       <div class="bd">
