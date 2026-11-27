@@ -862,7 +862,14 @@ function beep(){
 /* ---------------- 초기화 ---------------- */
 function boot(){
   const m = /#t=([A-Za-z0-9_\-]+)/.exec(location.hash);
-  if(m && m[1]){ S.topic = m[1]; save(); }
+  if(m && m[1]){
+    const code = m[1];
+    if(S.topic && S.topic !== code){          // 다른 방으로 들어오면 이전 방 기록은 버린다
+      S.log=[]; S.status={}; S.meetings=[]; S.tasks=[]; S.channels={}; S.seen=0;
+      seenIds.clear();
+    }
+    S.topic = code; save();
+  }
 
   document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.tab));
   document.querySelectorAll("[data-quick]").forEach(b=>b.onclick=()=>quick(b.dataset.quick));
