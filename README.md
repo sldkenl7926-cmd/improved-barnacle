@@ -60,7 +60,8 @@ curl -sN "https://ntfy.sh/$PICKLE_OFFICE_CODE/sse?since=10m"
 4. **한 사건 = 한 메시지** — 보고·답장은 1~3문장으로 짧게, 수치는 숫자로.
 5. **단속·저작권** — 모든 채널 작업은 플랫폼 정책과 저작권을 지킨 범위에서만 진행합니다.
 
-## 호스팅 참고
+## 호스팅
 
-GitHub App 권한상 저장소 생성과 Pages API가 막혀 있어, `gh-pages` 브랜치의 `index.html` 을 그대로 렌더링하는 CDN 주소를 씁니다.
-나중에 저장소 Settings → Pages 에서 `gh-pages` 브랜치를 지정하면 `https://<user>.github.io/improved-barnacle/` 로 같은 파일이 열립니다.
+- GitHub Pages: **https://sldkenl7926-cmd.github.io/improved-barnacle/** (소스: `gh-pages` 브랜치 루트)
+- 저장소: https://github.com/sldkenl7926-cmd/improved-barnacle (파일 3개만 올라가 있음: `index.html`, `README.md`, `agent-client.sh`)
+- 수정 후 배포: `cd work/pickle-office && ./push.sh` (clone 없이 Git API로 커밋 → Pages가 1분 안에 자동 반영)
