@@ -18,6 +18,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
   font-size:15px;line-height:1.5;overscroll-behavior-y:none}
 body{min-height:100dvh;display:flex;flex-direction:column}
 button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:none;cursor:pointer}
+[hidden]{display:none!important}
 input,textarea,select{font-family:inherit;font-size:16px;color:var(--text);background:var(--bg2);
   border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;outline:none}
 input:focus,textarea:focus{border-color:var(--accent2)}
@@ -57,8 +58,9 @@ h2.sec:first-child{margin-top:2px}
   linear-gradient(135deg,rgba(124,212,161,.12),rgba(138,180,248,.10));border:1px solid #2b3a44;
   border-radius:var(--r);padding:14px 16px}
 .goal .t{font-size:12.5px;color:var(--dim);font-weight:600}
+.goal>div:first-child{min-width:150px}
 .goal .v{font-size:22px;font-weight:800;letter-spacing:-.4px;margin-top:2px}
-.goal .v span{font-size:13px;font-weight:600;color:var(--dim);margin-left:5px}
+.goal .v span{font-size:13px;font-weight:600;color:var(--dim);margin-left:5px;white-space:nowrap}
 .bar{height:9px;border-radius:999px;background:#0b0f16;overflow:hidden;flex:1 1 220px;min-width:140px;border:1px solid var(--line)}
 .bar>i{display:block;height:100%;width:0%;border-radius:999px;
   background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s}
@@ -589,7 +591,12 @@ function linkify(text){
 
 function renderLog(){
   const host=$("#log");
-  let list = S.log.slice().sort((a,b)=>a.ts-b.ts);
+  const seen = new Set();
+  let list = S.log.slice().sort((a,b)=>a.ts-b.ts).filter(m=>{
+    if(!m.id) return true;
+    if(seen.has(m.id)) return false;
+    seen.add(m.id); return true;
+  });
   if(S.filter==="mention"){
     list = list.filter(m=> m.from!==meIs() && (mentionsOf(m.text).includes(meIs()) || mentionsOf(m.text).includes("all")));
   } else if(S.filter!=="all"){
@@ -616,7 +623,8 @@ function renderLog(){
   });
   host.innerHTML = out;
   host.scrollTop = host.scrollHeight;
-  unread = 0; paintNav();
+  if(document.querySelector('#tab-chat.sel')) unread = 0;
+  paintNav();
 }
 
 function paintNav(){
@@ -638,7 +646,13 @@ async function send(){
   try{
     const saved = await publish({kind:"chat", from:meIs(), name:meName(), text, to});
     const i = S.log.findIndex(x=>x.id===local.id);
-    if(i>=0){ S.log[i] = Object.assign(local,{id:saved.id, ts:saved.ts||local.ts, pending:false}); seenIds.add(saved.id); }
+    const echoed = S.log.findIndex(x=>x.id===saved.id);
+    if(echoed>=0 && echoed!==i){
+      if(i>=0) S.log.splice(i,1);                 // 서버 echo가 먼저 도착한 경우
+    } else if(i>=0){
+      S.log[i] = Object.assign(local,{id:saved.id, ts:saved.ts||local.ts, pending:false});
+    }
+    seenIds.add(saved.id);
     renderLog(); save();
   }catch(e){
     const i = S.log.findIndex(x=>x.id===local.id);
