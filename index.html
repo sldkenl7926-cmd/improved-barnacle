@@ -413,7 +413,8 @@ function ingest(raw){
   try{ o = JSON.parse(raw.message); }catch(e){ o = {kind:"chat", from:"guest", name:"외부", text:raw.message}; }
   if(!o || !o.kind) o = {kind:"chat", from:"guest", name:"외부", text:raw.message};
   const ts = Number(o.ts) || (Number(raw.time)*1000) || Date.now();
-  const id = raw.id || o.id || ("x-"+ts+"-"+Math.random().toString(36).slice(2,7));
+  const pid = o.id || null;                                  // 안건·할 일의 고유 id(내용이 정함)
+  const id = raw.id || pid || ("x-"+ts+"-"+Math.random().toString(36).slice(2,7));
   if(seenIds.has(id)) return;
   seenIds.add(id);
   o.id = id; o.ts = ts;
@@ -431,14 +432,16 @@ function ingest(raw){
     (o.items||[]).forEach(it=>{ if(it && it.id) S.channels[it.id] = Number(it.amount)||0; });
     renderChannels(); renderGoal();
   } else if(o.kind === "meeting"){
-    const i = S.meetings.findIndex(x=>x.id===o.id);
-    const item = {id:o.id||("m-"+ts), title:o.title||"안건", phase:o.phase||"round1",
+    const key = pid || ("m-"+ts);
+    const i = S.meetings.findIndex(x=>x.id===key);
+    const item = {id:key, title:o.title||"안건", phase:o.phase||"round1",
                   owner:o.owner||"", text:o.text||"", state:o.state||"open", ts, from:o.from||""};
     if(i>=0) S.meetings[i] = Object.assign(S.meetings[i], item); else S.meetings.push(item);
     renderMeetings();
   } else if(o.kind === "task"){
-    const i = S.tasks.findIndex(x=>x.id===o.id);
-    const item = {id:o.id||("t-"+ts), title:o.title||"", owner:o.owner||"", due:o.due||"", state:o.state||"진행", ts};
+    const key = pid || ("t-"+ts);
+    const i = S.tasks.findIndex(x=>x.id===key);
+    const item = {id:key, title:o.title||"", owner:o.owner||"", due:o.due||"", state:o.state||"진행", ts};
     if(i>=0) S.tasks[i] = Object.assign(S.tasks[i], item); else S.tasks.push(item);
     renderMeetings();
   }
@@ -721,7 +724,9 @@ async function saveChannels(){
 /* ---------------- 렌더: 회의 ---------------- */
 function renderMeetings(){
   const host=$("#mList");
-  const list = S.meetings.slice().sort((a,b)=> (a.state==="done"?1:0)-(b.state==="done"?1:0) || b.ts-a.ts);
+  const uniq = new Set();
+  const list = S.meetings.filter(m=>{ if(uniq.has(m.id)) return false; uniq.add(m.id); return true; })
+    .sort((a,b)=> (a.state==="done"?1:0)-(b.state==="done"?1:0) || b.ts-a.ts);
   let html = list.map(m=>{
     const a = AGENTS[m.owner] || null;
     const phase = {round1:"1바퀴 보고", round2:"2바퀴 수정안", decision:"결론"}[m.phase]||"안건";
