@@ -681,12 +681,22 @@ function renderChannels(){
     const a = AGENTS[c.owner]||{short:"-",emoji:"–"};
     return `<div class="chcell">
       <div class="h"><span>${c.icon}</span><span>${esc(c.name)}</span><span class="o">${a.emoji} ${esc(a.short)}</span></div>
-      <div class="n">${v.toLocaleString("ko-KR")}<small>만 원 / 목표 ${c.goal}</small></div>
+      <div class="n" id="n-${c.id}">${v.toLocaleString("ko-KR")}<small>만 원 / 목표 ${c.goal}</small></div>
       <div class="e"><input type="number" inputmode="numeric" min="0" step="1" data-ch="${c.id}" value="${v}"><span style="font-size:11.5px;color:var(--dim)">만원</span></div>
     </div>`;
   }).join("");
   $("#chGrid").querySelectorAll("[data-ch]").forEach(inp=>{
-    inp.oninput = ()=>{ S.channels[inp.dataset.ch]=Number(inp.value)||0; renderGoal(); save(); };
+    inp.oninput = ()=>{
+      const v = Number(inp.value)||0;
+      S.channels[inp.dataset.ch] = v;
+      const c = CHANNELS.find(x=>x.id===inp.dataset.ch);
+      const n = document.getElementById("n-"+inp.dataset.ch);
+      if(n && c) n.innerHTML = v.toLocaleString("ko-KR")+"<small>만 원 / 목표 "+c.goal+"</small>";
+      const tot = CHANNELS.reduce((s2,x)=> s2 + (Number(S.channels[x.id])||0), 0);
+      const tEl = document.getElementById("chTotal");
+      if(tEl) tEl.textContent = tot.toLocaleString("ko-KR")+"만 원 / 1,000만 원";
+      renderGoal(); save();
+    };
   });
   $("#roles").innerHTML = Object.keys(AGENTS).filter(k=>k!=="seoggyu").map(id=>{
     const a=AGENTS[id];
@@ -696,7 +706,7 @@ function renderChannels(){
   const items = CHANNELS.map(c=>({id:c.id, amount:Number(S.channels[c.id])||0}));
   const total = items.reduce((s,i)=>s+i.amount,0);
   $("#roles").insertAdjacentHTML("beforeend",
-    `<div class="kv"><span class="k">이번 달 합계</span><span class="v">${total.toLocaleString("ko-KR")}만 원 / 1,000만 원</span></div>`);
+    `<div class="kv"><span class="k">이번 달 합계</span><span class="v" id="chTotal">${total.toLocaleString("ko-KR")}만 원 / 1,000만 원</span></div>`);
 }
 
 async function saveChannels(){
