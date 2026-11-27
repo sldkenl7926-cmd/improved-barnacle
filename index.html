@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10131a">
+<title>🏢 피클 합동 비서실</title>
+<style>
+:root{
+  --bg:#0d1016; --bg2:#131824; --card:#161c29; --card2:#1d2536;
+  --line:#29334a; --text:#e8eef8; --dim:#8d9ab3; --dim2:#63708c;
+  --accent:#7cd4a1; --accent2:#8ab4f8; --warn:#ffd479; --pink:#f79ac9; --red:#ff7b7b;
+  --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  font-size:15px;line-height:1.5;overscroll-behavior-y:none}
+body{min-height:100dvh;display:flex;flex-direction:column}
+button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,textarea,select{font-family:inherit;font-size:16px;color:var(--text);background:var(--bg2);
+  border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;outline:none}
+input:focus,textarea:focus{border-color:var(--accent2)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#2c364d;border-radius:8px}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);
+  background:rgba(13,16,22,.86);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:10px;padding:10px 14px;max-width:1180px;margin:0 auto}
+.logo{font-size:19px;font-weight:800;letter-spacing:-.3px;white-space:nowrap}
+.logo small{font-weight:600;color:var(--dim);font-size:12px;margin-left:6px}
+.live{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#55617c;flex:none}
+.dot.on{background:var(--accent);box-shadow:0 0 0 3px rgba(124,212,161,.18)}
+.dot.err{background:var(--red)}
+nav{display:flex;gap:4px;padding:0 8px 8px;max-width:1180px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;padding:8px 13px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--dim);
+  border:1px solid transparent;white-space:nowrap}
+nav button.sel{color:#0d1016;background:var(--text);border-color:var(--text)}
+nav button .bdg{display:inline-block;min-width:17px;padding:0 5px;margin-left:5px;border-radius:999px;
+  background:var(--red);color:#fff;font-size:11px;line-height:17px;text-align:center;vertical-align:1px}
+
+main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:14px;padding-bottom:26px}
+section{display:none}
+section.sel{display:block;animation:fade .18s ease-out}
+@keyframes fade{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+h2.sec{font-size:14px;color:var(--dim);font-weight:700;letter-spacing:.2px;margin:18px 2px 9px;display:flex;align-items:center;gap:7px}
+h2.sec:first-child{margin-top:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+
+/* ---------- goal banner ---------- */
+.goal{display:flex;flex-wrap:wrap;gap:14px;align-items:center;background:
+  linear-gradient(135deg,rgba(124,212,161,.12),rgba(138,180,248,.10));border:1px solid #2b3a44;
+  border-radius:var(--r);padding:14px 16px}
+.goal .t{font-size:12.5px;color:var(--dim);font-weight:600}
+.goal .v{font-size:22px;font-weight:800;letter-spacing:-.4px;margin-top:2px}
+.goal .v span{font-size:13px;font-weight:600;color:var(--dim);margin-left:5px}
+.bar{height:9px;border-radius:999px;background:#0b0f16;overflow:hidden;flex:1 1 220px;min-width:140px;border:1px solid var(--line)}
+.bar>i{display:block;height:100%;width:0%;border-radius:999px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s}
+
+/* ---------- office map ---------- */
+.grid{display:grid;gap:11px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+.desk{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:14px 13px 12px;text-align:left;overflow:hidden;transition:transform .12s,border-color .12s}
+.desk:active{transform:scale(.985)}
+.desk.me{border-color:#3a4a63;background:linear-gradient(160deg,#1a2233,#161c29)}
+.desk .ava{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;
+  background:#0f1520;border:1px solid var(--line);margin-bottom:9px}
+.desk .nm{font-weight:800;font-size:15px;letter-spacing:-.2px}
+.desk .rl{font-size:11.5px;color:var(--dim);margin-top:2px;line-height:1.35;min-height:31px}
+.desk .st{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;margin-top:9px;
+  border:1px solid var(--line);border-radius:999px;padding:3px 8px;color:var(--dim)}
+.desk .task{font-size:11.5px;color:var(--accent2);margin-top:7px;min-height:16px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.desk .tag{position:absolute;top:11px;right:11px;font-size:10.5px;color:var(--dim2)}
+.ribbon{position:absolute;inset:auto 0 0 0;height:3px}
+.hint{font-size:11.5px;color:var(--dim2);margin:9px 3px 0;line-height:1.5}
+
+/* ---------- chat ---------- */
+.chatwrap{display:flex;flex-direction:column;gap:10px}
+.filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.chip{flex:none;font-size:12.5px;font-weight:600;color:var(--dim);border:1px solid var(--line);
+  border-radius:999px;padding:5px 11px;background:var(--bg2)}
+.chip.sel{color:#0d1016;background:var(--accent);border-color:var(--accent)}
+.chip.mention{color:var(--warn);border-color:#4a4327;background:rgba(255,212,121,.08)}
+.log{background:var(--card,#161c29);border:1px solid var(--line);border-radius:var(--r);
+  padding:12px;min-height:44vh;max-height:calc(100dvh - 330px);overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.daysep{align-self:center;font-size:11px;color:var(--dim2);background:#0f1520;border:1px solid var(--line);
+  padding:2px 10px;border-radius:999px;margin:4px 0}
+.msg{display:flex;gap:9px;max-width:92%}
+.msg .av{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;font-size:17px;
+  background:#0f1520;border:1px solid var(--line);flex:none}
+.msg .bd{min-width:0}
+.msg .who{font-size:11.5px;color:var(--dim);margin-bottom:3px;display:flex;gap:6px;align-items:center}
+.msg .who b{color:var(--text);font-size:12px}
+.msg .tx{background:var(--card2);border:1px solid var(--line);border-radius:4px 13px 13px 13px;
+  padding:9px 12px;font-size:14.5px;white-space:pre-wrap;word-break:break-word}
+.msg .tx a{color:var(--accent2)}
+.msg .tx .m{color:var(--warn);font-weight:700}
+.msg.mine{align-self:flex-end;flex-direction:row-reverse}
+.msg.mine .tx{background:#203024;border-color:#2f4838;border-radius:13px 4px 13px 13px}
+.msg.mine .who{justify-content:flex-end}
+.msg.sys{align-self:center;max-width:100%}
+.msg.sys .tx{background:transparent;border:1px dashed var(--line);color:var(--dim);font-size:12.5px;
+  border-radius:999px;padding:5px 12px}
+.msg.pending .tx{opacity:.55}
+.msg.fail .tx{border-color:var(--red);color:#ffb3b3}
+.tx .meta{display:block;font-size:10.5px;color:var(--dim2);margin-top:4px}
+.composer{display:flex;gap:8px;align-items:flex-end;position:sticky;bottom:0;background:var(--bg);
+  padding-top:10px}
+.composer textarea{flex:1;min-height:46px;max-height:132px;resize:none;border-radius:13px;line-height:1.45}
+.send{flex:none;width:46px;height:46px;border-radius:13px;background:var(--accent);color:#0d1016;
+  font-size:19px;font-weight:800;display:grid;place-items:center}
+.send:disabled{opacity:.45}
+.mentions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2px}
+.mentions button{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:999px;
+  padding:4px 10px;background:var(--bg2)}
+.notice{font-size:11.5px;color:var(--warn);background:rgba(255,212,121,.07);border:1px solid #4a4327;
+  border-radius:11px;padding:8px 11px;line-height:1.5}
+
+/* ---------- tables / lists ---------- */
+.row{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid var(--line);
+  border-radius:13px;background:var(--card);margin-bottom:8px}
+.row .g{flex:1;min-width:0}
+.row .ttl{font-weight:700;font-size:14px}
+.row .sub{font-size:11.5px;color:var(--dim);margin-top:3px}
+.row .body{font-size:13px;color:#c3cddf;margin-top:6px;white-space:pre-wrap}
+.pill{flex:none;font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px;border:1px solid var(--line);color:var(--dim)}
+.pill.open{color:var(--warn);border-color:#4a4327;background:rgba(255,212,121,.08)}
+.pill.done{color:var(--accent);border-color:#2b4437;background:rgba(124,212,161,.08)}
+.pill.do{color:var(--accent2);border-color:#2c3c58;background:rgba(138,180,248,.08)}
+.chgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.chcell{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px}
+.chcell .h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px}
+.chcell .o{font-size:11px;color:var(--dim);margin-left:auto}
+.chcell .n{font-size:23px;font-weight:800;margin-top:8px;letter-spacing:-.5px}
+.chcell .n small{font-size:12px;color:var(--dim);font-weight:600;margin-left:4px}
+.chcell .e{display:flex;gap:6px;margin-top:8px;align-items:center}
+.chcell input{padding:6px 9px;font-size:14px;border-radius:9px}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{padding:9px 14px;border-radius:11px;background:var(--card2);border:1px solid var(--line);
+  font-weight:700;font-size:13.5px}
+.btn.pri{background:var(--accent);color:#0d1016;border-color:var(--accent)}
+.btn.warn{color:var(--warn);border-color:#4a4327}
+.btn.sm{padding:6px 11px;font-size:12.5px;border-radius:9px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #202a3c;font-size:13.5px}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--dim)}
+.kv .v{text-align:right;word-break:break-all;font-variant-numeric:tabular-nums}
+code{background:#0f1520;border:1px solid var(--line);border-radius:6px;padding:1px 5px;font-size:12.5px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
+pre{background:#0b0f16;border:1px solid var(--line);border-radius:11px;padding:11px;overflow-x:auto;
+  font-size:12px;line-height:1.55;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#b9c6dd}
+.empty{text-align:center;color:var(--dim2);font-size:12.5px;padding:18px 8px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:#e8eef8;color:#0d1016;
+  font-weight:700;font-size:13px;padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;
+  transition:.22s;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:86vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.spacer{height:8px}
+@media(min-width:760px){
+  .grid{grid-template-columns:repeat(4,1fr)}
+  main{padding:20px}
+  .log{max-height:calc(100dvh - 300px)}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div class="logo">🏢 피클 합동 비서실<small id="sub">LIVE</small></div>
+    <div class="live" id="liveBox"><span class="dot" id="liveDot"></span><span id="liveTxt">연결 중…</span></div>
+  </div>
+  <nav id="nav">
+    <button data-tab="office" class="sel">🏢 오피스 맵</button>
+    <button data-tab="chat">💬 합동 채팅방 <span class="bdg" id="navBdg" hidden>0</span></button>
+    <button data-tab="channels">📊 채널 현황</button>
+    <button data-tab="meeting">🗓️ 회의 안건</button>
+    <button data-tab="setup">⚙️ 설정·사용법</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ================= 오피스 ================= -->
+<section id="tab-office" class="sel">
+  <div class="goal">
+    <div>
+      <div class="t">2026년 11월 · 마케팅 회사 목표</div>
+      <div class="v" id="goalVal">0<span>/ 1,000만 원</span></div>
+    </div>
+    <div class="bar"><i id="goalBar"></i></div>
+    <div style="font-size:11.5px;color:var(--dim);width:100%;margin-top:-4px">
+      채널 현황 탭에서 이번 달 수익을 입력하면 자동 반영됩니다 · 매주 월요일 성과 보고
+    </div>
+  </div>
+
+  <h2 class="sec">🧑‍💼 비서 상태 보드 <button class="btn sm" id="askAll" style="margin-left:auto">📣 전체 상태 보고 요청</button></h2>
+  <div class="grid" id="desks"></div>
+  <div class="hint">카드를 누르면 그 비서와 1:1 대화가 열립니다. 상태는 비서들이 DB에 남긴 최근 활동(10분 이내=근무중)으로 자동 표시됩니다.</div>
+
+  <h2 class="sec">⚡ 바로 지시하기</h2>
+  <div class="card">
+    <div class="btnrow" style="margin-top:0">
+      <button class="btn pri" data-quick="report">📊 오늘 실적 보고 받기</button>
+      <button class="btn" data-quick="problem">🚧 막힌 문제 1개 올리기</button>
+      <button class="btn" data-quick="meeting">🗓️ 회의 소집 (1바퀴 보고→수정안)</button>
+      <button class="btn" data-quick="handoff">🤝 일손 넘기기</button>
+    </div>
+    <div class="hint">누르면 합동 채팅방에 지시문이 올라가고, 5분 감시 중인 비서들이 읽습니다.</div>
+  </div>
+
+  <h2 class="sec">📌 최근 흐름</h2>
+  <div id="recent" class="card" style="padding:8px"></div>
+</section>
+
+<!-- ================= 채팅 ================= -->
+<section id="tab-chat">
+  <div class="chatwrap">
+    <div class="filters" id="filters"></div>
+    <div class="notice" id="chatNotice">초대 코드를 아는 사람만 들어올 수 있는 방입니다. 전화번호·주소·비밀번호 같은 민감정보는 올리지 마세요.</div>
+    <div class="log" id="log"><div class="empty">아직 대화가 없습니다. 아래에 <b>@온이 안녕</b> 처럼 보내 보세요.</div></div>
+    <div class="mentions" id="mentionBar">
+      <button data-m="@전체">@전체</button>
+      <button data-m="@피클">@피클</button>
+      <button data-m="@온이">@온이</button>
+      <button data-m="@비서3">@비서3</button>
+      <button data-m="@스레드">@스레드</button>
+    </div>
+    <div class="composer">
+      <textarea id="input" rows="1" placeholder="@온이 처럼 부르면 그 비서가 답합니다"></textarea>
+      <button class="send" id="sendBtn" title="보내기">↑</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 채널 ================= -->
+<section id="tab-channels">
+  <h2 class="sec">📊 이번 달 채널 현황 <button class="btn sm" id="chSave" style="margin-left:auto">💾 저장·공유</button></h2>
+  <div class="chgrid" id="chGrid"></div>
+  <div class="hint">금액은 만 원 단위로 입력하세요. ‘저장·공유’를 누르면 비서들이 보는 DB에도 올라갑니다.</div>
+
+  <h2 class="sec">👥 담당 분담</h2>
+  <div class="card" id="roles"></div>
+</section>
+
+<!-- ================= 회의 ================= -->
+<section id="tab-meeting">
+  <h2 class="sec">🗓️ 회의 안건 · 결정사항 <button class="btn sm" id="mNew" style="margin-left:auto">＋ 안건 추가</button></h2>
+  <div class="notice" style="margin-bottom:10px">회의 형식: <b>1바퀴</b> 각자 한 일·수치 보고 + 막힌 문제 → <b>2바퀴</b> 구체적 수정안·담당·기한 → <b>결론</b> 오늘·내일 실행 4~5개</div>
+  <div id="mList"></div>
+  <div class="btnrow">
+    <button class="btn pri" id="mCall">📣 회의 소집</button>
+    <button class="btn" id="mSummary">📋 결정사항 복사</button>
+  </div>
+</section>
+
+<!-- ================= 설정 ================= -->
+<section id="tab-setup">
+  <h2 class="sec">🔌 연결 상태</h2>
+  <div class="card">
+    <div class="kv"><span class="k">실시간 DB</span><span class="v" id="dbKind">ntfy.sh (무료·가입 없음)</span></div>
+    <div class="kv"><span class="k">연결</span><span class="v" id="dbState">-</span></div>
+    <div class="kv"><span class="k">마지막 수신</span><span class="v" id="dbLast">-</span></div>
+    <div class="kv"><span class="k">받은 메시지</span><span class="v" id="dbCount">0</span></div>
+    <div class="kv"><span class="k">초대 코드</span><span class="v"><code id="codeShow">-</code></span></div>
+    <div class="btnrow">
+      <button class="btn pri" id="btnTest">🔍 연결 테스트</button>
+      <button class="btn" id="btnCopyUrl">🔗 내 접속 주소 복사</button>
+      <button class="btn" id="btnCode">🔑 초대 코드 변경</button>
+    </div>
+  </div>
+
+  <h2 class="sec">🙋 내 이름</h2>
+  <div class="card">
+    <div class="btnrow" style="margin-top:0" id="meRow"></div>
+  </div>
+
+  <h2 class="sec">🤖 비서(에이전트) 연결 방법</h2>
+  <div class="card">
+    <p style="font-size:13px;color:#c3cddf;margin:0 0 10px">비서들은 셸에서 아래 2개 명령만 쓰면 이 방에 읽고 씁니다. 초대 코드 부분만 바꿔 쓰세요.</p>
+    <pre id="apiSnippet"></pre>
+    <div class="btnrow"><button class="btn" id="btnCopyApi">📋 명령 복사</button></div>
+  </div>
+
+  <h2 class="sec">🧾 JSON 규격</h2>
+  <div class="card"><pre id="schemaSnippet"></pre></div>
+
+  <h2 class="sec">💾 데이터</h2>
+  <div class="card">
+    <div class="kv"><span class="k">이 기기에 저장된 대화</span><span class="v" id="localCount">0</span></div>
+    <div class="kv"><span class="k">보관 정책</span><span class="v">서버 12시간 · 이 기기 최근 800개</span></div>
+    <div class="btnrow">
+      <button class="btn" id="btnExport">⬇️ 대화 내보내기(JSON)</button>
+      <button class="btn warn" id="btnClear">🧹 이 기기 기록 지우기</button>
+    </div>
+  </div>
+  <div class="hint" style="margin-bottom:20px">
+    Firebase로 옮기고 싶으면 Google 계정 2단계 인증만 켜면 됩니다(설정 → 보안). 그때 이 페이지의 DB 주소 한 줄만 바꾸면 됩니다.
+  </div>
+</section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   피클 합동 비서실 — 단일 파일 웹앱
+   DB: ntfy.sh (무료, 가입·키 없음). REST + SSE.
+   ============================================================ */
+
+const BASE = "https://ntfy.sh";     // 바꾸면 자체 호스팅 ntfy로 교체 가능
+const STORE = "poffice.v1";
+
+const AGENTS = {
+  pickle:   {name:"메인 피클", short:"피클",   emoji:"🥒", color:"#7cd4a1", role:"총괄 · econo-tip · 유튜브 · 체험단"},
+  oni:      {name:"온이",     short:"온이",   emoji:"🌿", color:"#8ab4f8", role:"티스토리 블로그 5개"},
+  biseo3:   {name:"비서3",    short:"비서3",  emoji:"📘", color:"#ffd479", role:"네이버 블로그 3개"},
+  seuledeu: {name:"스레드",   short:"스레드", emoji:"🧵", color:"#f79ac9", role:"어바웃데이 · 살림앤트립"},
+  seoggyu:  {name:"박석규",   short:"사장님", emoji:"👑", color:"#e8eef8", role:"대표"}
+};
+const ALIAS = { "피클":"pickle","메인":"pickle","온이":"oni","비서3":"biseo3","비서":"biseo3",
+                "스레드":"seuledeu","사장":"seoggyu","사장님":"seoggyu","박석규":"seoggyu","전체":"all" };
+
+const CHANNELS = [
+  {id:"tistory",  icon:"✍️", name:"티스토리 5개",     owner:"oni",      goal:250, unit:"만원"},
+  {id:"naver",    icon:"🟢", name:"네이버 블로그 3개", owner:"biseo3",   goal:200, unit:"만원"},
+  {id:"threads",  icon:"🧵", name:"스레드·인스타",     owner:"seuledeu", goal:150, unit:"만원"},
+  {id:"econotip", icon:"🌐", name:"econo-tip.com",    owner:"pickle",   goal:150, unit:"만원"},
+  {id:"youtube",  icon:"▶️", name:"유튜브 6채널",      owner:"pickle",   goal:150, unit:"만원"},
+  {id:"trial",    icon:"🎁", name:"체험단·기자단",     owner:"pickle",   goal:100, unit:"만원"}
+];
+
+const DEFAULT = { me:"seoggyu", topic:"", log:[], status:{}, tasks:[], meetings:[],
+                  channels:{}, seen:0, filter:"all", sound:true };
+
+let S = load();
+let es = null, pollTimer = null, lastRx = 0, unread = 0, connState = "idle";
+const seenIds = new Set(S.log.map(m => m.id).filter(Boolean));
+
+/* ---------------- 저장 ---------------- */
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE);
+    const o = raw ? JSON.parse(raw) : {};
+    return Object.assign(JSON.parse(JSON.stringify(DEFAULT)), o);
+  }catch(e){ return JSON.parse(JSON.stringify(DEFAULT)); }
+}
+let saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(()=>{
+  try{ S.log = S.log.slice(-800); localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){}
+},120); }
+
+/* ---------------- 유틸 ---------------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(msg, ms){ const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"), ms||2200); }
+function pad(n){ return n<10 ? "0"+n : ""+n; }
+function hhmm(ts){ const d=new Date(ts); return pad(d.getHours())+":"+pad(d.getMinutes()); }
+function dayKey(ts){ const d=new Date(ts); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function dayLabel(ts){
+  const d=new Date(ts), t=new Date();
+  const same=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
+  if(same(d,t)) return "오늘";
+  const y=new Date(t.getTime()-864e5); if(same(d,y)) return "어제";
+  return (d.getMonth()+1)+"월 "+d.getDate()+"일 ("+["일","월","화","수","목","금","토"][d.getDay()]+")";
+}
+function ago(ts){
+  if(!ts) return "-";
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return "방금";
+  if(s<3600) return Math.floor(s/60)+"분 전";
+  if(s<86400) return Math.floor(s/3600)+"시간 전";
+  return Math.floor(s/86400)+"일 전";
+}
+function mentionsOf(text){
+  const out=[]; const re=/@([가-힣A-Za-z0-9_]+)/g; let m;
+  while((m=re.exec(text))){ const id=ALIAS[m[1]]; if(id && !out.includes(id)) out.push(id); }
+  return out;
+}
+function meIs(){ return AGENTS[S.me] ? S.me : "seoggyu"; }
+function meName(){ return (AGENTS[S.me]||AGENTS.seoggyu).name; }
+
+/* ---------------- DB: ntfy ---------------- */
+function topic(){ return S.topic; }
+function ready(){ return !!S.topic; }
+
+async function publish(obj){
+  if(!ready()) throw new Error("초대 코드가 없습니다");
+  const body = Object.assign({v:1, ts:Date.now()}, obj);
+  const r = await fetch(BASE+"/"+encodeURIComponent(S.topic), {
+    method:"POST", headers:{"Content-Type":"text/plain;charset=UTF-8"}, body:JSON.stringify(body)
+  });
+  if(!r.ok) throw new Error("전송 실패 "+r.status);
+  const j = await r.json().catch(()=>null);
+  return Object.assign(body, {id:(j&&j.id)||("l-"+body.ts+"-"+Math.random().toString(36).slice(2,7))});
+}
+
+function ingest(raw){
+  if(!raw || !raw.message) return;
+  let o = null;
+  try{ o = JSON.parse(raw.message); }catch(e){ o = {kind:"chat", from:"guest", name:"외부", text:raw.message}; }
+  if(!o || !o.kind) o = {kind:"chat", from:"guest", name:"외부", text:raw.message};
+  const ts = Number(o.ts) || (Number(raw.time)*1000) || Date.now();
+  const id = raw.id || o.id || ("x-"+ts+"-"+Math.random().toString(36).slice(2,7));
+  if(seenIds.has(id)) return;
+  seenIds.add(id);
+  o.id = id; o.ts = ts;
+  lastRx = Date.now();
+
+  if(o.kind === "chat"){
+    S.log.push({id, ts, kind:"chat", from:o.from||"guest", name:o.name|| (AGENTS[o.from]||{}).name || "외부",
+                text:String(o.text||""), to:Array.isArray(o.to)?o.to:[]});
+    if(o.from !== meIs()){ unread++; beep(); }
+    renderLog(); renderDesks(); renderRecent(); paintNav();
+  } else if(o.kind === "status"){
+    S.status[o.from||"guest"] = {state:o.state||"working", task:o.task||"", ts, progress:o.progress};
+    renderDesks();
+  } else if(o.kind === "channel"){
+    (o.items||[]).forEach(it=>{ if(it && it.id) S.channels[it.id] = Number(it.amount)||0; });
+    renderChannels(); renderGoal();
+  } else if(o.kind === "meeting"){
+    const i = S.meetings.findIndex(x=>x.id===o.id);
+    const item = {id:o.id||("m-"+ts), title:o.title||"안건", phase:o.phase||"round1",
+                  owner:o.owner||"", text:o.text||"", state:o.state||"open", ts, from:o.from||""};
+    if(i>=0) S.meetings[i] = Object.assign(S.meetings[i], item); else S.meetings.push(item);
+    renderMeetings();
+  } else if(o.kind === "task"){
+    const i = S.tasks.findIndex(x=>x.id===o.id);
+    const item = {id:o.id||("t-"+ts), title:o.title||"", owner:o.owner||"", due:o.due||"", state:o.state||"진행", ts};
+    if(i>=0) S.tasks[i] = Object.assign(S.tasks[i], item); else S.tasks.push(item);
+    renderMeetings();
+  }
+  save(); paintDbInfo();
+}
+
+function parseNdjson(text){
+  text.split("\n").forEach(line=>{
+    line=line.trim(); if(!line) return;
+    try{ ingest(JSON.parse(line)); }catch(e){}
+  });
+}
+
+async function pollOnce(){
+  if(!ready()) return;
+  try{
+    const since = Math.floor((Date.now() - 12*3600*1000)/1000);
+    const r = await fetch(BASE+"/"+encodeURIComponent(S.topic)+"/json?poll=1&since="+since, {cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    parseNdjson(await r.text());
+    setConn("on");
+  }catch(e){ setConn("err"); }
+}
+
+function connect(){
+  disconnect();
+  if(!ready()){ setConn("off"); return; }
+  pollOnce().then(()=>{
+    try{
+      es = new EventSource(BASE+"/"+encodeURIComponent(S.topic)+"/sse?since=10m");
+      es.onopen = ()=> setConn("on");
+      es.onmessage = ev=>{
+        try{ const o=JSON.parse(ev.data); if(o.event==="message") ingest(o); setConn("on"); }catch(e){}
+      };
+      es.onerror = ()=>{ setConn("err"); };
+    }catch(e){ setConn("err"); }
+  });
+  clearInterval(pollTimer);
+  pollTimer = setInterval(()=>{
+    if(document.visibilityState === "visible" && connState !== "on") pollOnce();
+  }, 12000);
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.visibilityState === "visible") pollOnce();
+  });
+  window.addEventListener("online", ()=> pollOnce());
+}
+
+function disconnect(){
+  if(es){ try{ es.close(); }catch(e){} es=null; }
+  clearInterval(pollTimer); pollTimer=null;
+}
+
+function setConn(state){
+  connState = state;
+  const dot=$("#liveDot"), txt=$("#liveTxt");
+  if(state==="on"){ dot.className="dot on"; txt.textContent = S.topic ? "실시간 연결" : "코드 필요"; }
+  else if(state==="err"){ dot.className="dot err"; txt.textContent="재연결 중…"; }
+  else { dot.className="dot"; txt.textContent = "오프라인"; }
+  paintDbInfo();
+  if(state==="on") ensureStatus();
+}
+
+function paintDbInfo(){
+  const st = {on:"🟢 연결됨", err:"🟠 재연결 중", off:"⚪ 코드 없음", idle:"⚪ 대기"}[connState] || "-";
+  $("#dbState").textContent = st;
+  $("#dbLast").textContent = lastRx ? hhmm(lastRx)+" ("+ago(lastRx)+")" : "-";
+  $("#dbCount").textContent = S.log.length + "개";
+  $("#localCount").textContent = S.log.length + "개";
+  $("#codeShow").textContent = S.topic || "(없음)";
+}
+
+/* 내 상태를 15분마다 heartbeat */
+let hbTimer=null;
+function ensureStatus(){
+  clearInterval(hbTimer);
+  hbTimer = setInterval(()=>{ if(ready() && document.visibilityState==="visible") beat("online"); }, 15*60*1000);
+}
+function beat(state, task){
+  if(!ready()) return;
+  publish({kind:"status", from:meIs(), name:meName(), state:state||"online", task:task||""}).catch(()=>{});
+}
+
+/* ---------------- 렌더: 오피스 ---------------- */
+function statusOf(id){
+  const st = S.status[id];
+  if(!st || !st.ts) return {label:"대기", cls:"", emoji:"⚪", task:"", ts:0};
+  const mins = (Date.now()-st.ts)/60000;
+  const em = {online:"🟢", working:"🟢", busy:"🟡", meeting:"🟣", rest:"🔵", offline:"⚫"}[st.state] || "🟢";
+  const label = {online:"근무중", working:"작업중", busy:"다른 일 중", meeting:"회의중", rest:"잠깐 쉼", offline:"오프라인"}[st.state] || "근무중";
+  if(st.state!=="offline" && mins>180) return {label:"오프라인", cls:"", emoji:"⚫", task:"", ts:st.ts};
+  if(mins>60 && st.state!=="offline") return {label:"자리비움", cls:"", emoji:"🟡", task:st.task||"", ts:st.ts};
+  return {label, cls:"on", emoji:em, task:st.task||"", ts:st.ts};
+}
+
+function renderDesks(){
+  const host = $("#desks");
+  host.innerHTML = Object.keys(AGENTS).filter(k=>k!=="seoggyu").map(id=>{
+    const a = AGENTS[id], st = statusOf(id);
+    const mine = (S.me===id);
+    return `<button class="desk${mine?" me":""}" data-dm="${id}">
+      <span class="tag">${st.ts?ago(st.ts):"활동 없음"}</span>
+      <div class="ava">${a.emoji}</div>
+      <div class="nm">${esc(a.name)}</div>
+      <div class="rl">${esc(a.role)}</div>
+      <div class="st"><span>${st.emoji}</span>${esc(st.label)}</div>
+      <div class="task">${esc(st.task||"—")}</div>
+      <div class="ribbon" style="background:${a.color}"></div>
+    </button>`;
+  }).join("");
+  host.querySelectorAll("[data-dm]").forEach(b=>b.onclick=()=>{
+    go("chat"); setFilter(b.dataset.dm);
+    const t=$("#input"); t.value = "@"+AGENTS[b.dataset.dm].short+" "; t.focus(); autosize(t);
+  });
+}
+
+function renderRecent(){
+  const host=$("#recent");
+  const last = S.log.slice(-6).reverse();
+  if(!last.length){ host.innerHTML = `<div class="empty">아직 기록이 없습니다.</div>`; return; }
+  host.innerHTML = last.map(m=>{
+    const a = AGENTS[m.from] || {emoji:"💬", name:m.name||"외부"};
+    return `<div class="row" style="margin-bottom:6px;padding:9px 10px">
+      <span style="font-size:17px">${a.emoji}</span>
+      <div class="g"><div class="ttl" style="font-size:13px">${esc(a.name||m.name)} <span style="font-weight:400;color:var(--dim2);font-size:11px">· ${hhmm(m.ts)}</span></div>
+      <div class="sub" style="color:#c3cddf;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(m.text)}</div></div>
+    </div>`;
+  }).join("");
+}
+
+function renderGoal(){
+  const total = CHANNELS.reduce((s,c)=> s + (Number(S.channels[c.id])||0), 0);
+  $("#goalVal").innerHTML = total.toLocaleString("ko-KR")+"<span>/ 1,000만 원</span>";
+  $("#goalBar").style.width = Math.min(100, total/1000*100).toFixed(1)+"%";
+}
+
+/* ---------------- 렌더: 채팅 ---------------- */
+function setFilter(f){ S.filter=f; save(); renderFilters(); renderLog(); }
+function renderFilters(){
+  const mk=(id,label,cls)=>`<button class="chip ${S.filter===id?"sel":""} ${cls||""}" data-f="${id}">${label}</button>`;
+  $("#filters").innerHTML =
+    mk("all","전체") + mk("mention","🔔 나를 부른 말","mention") +
+    Object.keys(AGENTS).filter(k=>k!=="seoggyu").map(k=>mk(k,AGENTS[k].emoji+" "+AGENTS[k].short)).join("");
+  $("#filters").querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>setFilter(b.dataset.f));
+}
+
+function linkify(text){
+  return esc(text).replace(/(@[가-힣A-Za-z0-9_]+)/g,'<span class="m">$1</span>')
+    .replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+
+function renderLog(){
+  const host=$("#log");
+  let list = S.log.slice().sort((a,b)=>a.ts-b.ts);
+  if(S.filter==="mention"){
+    list = list.filter(m=> m.from!==meIs() && (mentionsOf(m.text).includes(meIs()) || mentionsOf(m.text).includes("all")));
+  } else if(S.filter!=="all"){
+    list = list.filter(m=> m.from===S.filter);
+  }
+  if(!list.length){
+    host.innerHTML = `<div class="empty">${S.filter==="all"?"아직 대화가 없습니다. 아래에 <b>@온이 안녕</b> 처럼 보내 보세요.":"이 조건의 대화가 없습니다."}</div>`;
+    return;
+  }
+  let out="", lastDay="";
+  list.forEach(m=>{
+    const dk = dayKey(m.ts);
+    if(dk!==lastDay){ out += `<div class="daysep">${dayLabel(m.ts)}</div>`; lastDay=dk; }
+    const a = AGENTS[m.from] || {emoji:"💬", name:m.name};
+    const mine = m.from===meIs();
+    const cls = ["msg", mine?"mine":"", m.pending?"pending":"", m.fail?"fail":""].join(" ");
+    const toTxt = (m.to&&m.to.length) ? " · "+m.to.map(t=>"@"+((AGENTS[t]||{}).short||t)).join(" ") : "";
+    out += `<div class="${cls}">
+      ${mine?"":`<div class="av">${a.emoji}</div>`}
+      <div class="bd">
+        <div class="who"><b>${esc(a.name||m.name||"?")}</b>${esc(toTxt)}<span style="color:var(--dim2)">${hhmm(m.ts)}</span></div>
+        <div class="tx">${linkify(m.text)}${m.fail?'<span class="meta">전송 실패 · 다시 보내 주세요</span>':""}</div>
+      </div></div>`;
+  });
+  host.innerHTML = out;
+  host.scrollTop = host.scrollHeight;
+  unread = 0; paintNav();
+}
+
+function paintNav(){
+  const b=$("#navBdg");
+  if(unread>0 && !document.querySelector('#tab-chat.sel')){ b.hidden=false; b.textContent=unread>99?"99+":unread; }
+  else { b.hidden=true; }
+}
+
+function autosize(t){ t.style.height="auto"; t.style.height=Math.min(132, t.scrollHeight)+"px"; }
+
+async function send(){
+  const ta=$("#input"); const text = ta.value.trim();
+  if(!text) return;
+  if(!ready()){ askCode(); return; }
+  const to = mentionsOf(text);
+  ta.value=""; autosize(ta);
+  const local = {id:"p-"+Date.now(), ts:Date.now(), kind:"chat", from:meIs(), name:meName(), text, to, pending:true};
+  S.log.push(local); renderLog(); save();
+  try{
+    const saved = await publish({kind:"chat", from:meIs(), name:meName(), text, to});
+    const i = S.log.findIndex(x=>x.id===local.id);
+    if(i>=0){ S.log[i] = Object.assign(local,{id:saved.id, ts:saved.ts||local.ts, pending:false}); seenIds.add(saved.id); }
+    renderLog(); save();
+  }catch(e){
+    const i = S.log.findIndex(x=>x.id===local.id);
+    if(i>=0){ S.log[i].pending=false; S.log[i].fail=true; }
+    renderLog(); save();
+    toast("전송 실패: "+e.message);
+  }
+}
+
+function quick(kind){
+  const map = {
+    report:"@전체 오늘 실적 보고 부탁해요. ① 오늘 발행·예약 건수 ② 방문자·조회수 ③ 반응(좋아요·댓글·팔로워) ④ 막힌 문제 1개 — 수치로 간단히.",
+    problem:"@전체 지금 막힌 문제 하나씩만 올려 주세요. (예: 발행이 안 되는 곳, 인증이 막힌 곳, 소재 부족) 제가 바로 처리하겠습니다.",
+    meeting:"@전체 회의 소집합니다. 1바퀴: 각자 오늘 한 일·수치 + 막힌 문제 1~2개. 2바퀴: 수정안·담당·기한. 10분 안에 1바퀴부터 올려 주세요.",
+    handoff:"@전체 일손 조정합니다. 지금 남는 시간이 있는 비서는 '여유 있음 + 가능한 일'을, 벅찬 비서는 '넘길 일'을 올려 주세요."
+  };
+  go("chat"); setFilter("all");
+  const t=$("#input"); t.value = map[kind]||""; t.focus(); autosize(t);
+  toast("지시문을 넣었어요 · 보내기(↑)만 누르면 됩니다");
+}
+
+/* ---------------- 렌더: 채널 ---------------- */
+function renderChannels(){
+  $("#chGrid").innerHTML = CHANNELS.map(c=>{
+    const v = Number(S.channels[c.id])||0;
+    const a = AGENTS[c.owner]||{short:"-",emoji:"–"};
+    return `<div class="chcell">
+      <div class="h"><span>${c.icon}</span><span>${esc(c.name)}</span><span class="o">${a.emoji} ${esc(a.short)}</span></div>
+      <div class="n">${v.toLocaleString("ko-KR")}<small>만 원 / 목표 ${c.goal}</small></div>
+      <div class="e"><input type="number" inputmode="numeric" min="0" step="1" data-ch="${c.id}" value="${v}"><span style="font-size:11.5px;color:var(--dim)">만원</span></div>
+    </div>`;
+  }).join("");
+  $("#chGrid").querySelectorAll("[data-ch]").forEach(inp=>{
+    inp.oninput = ()=>{ S.channels[inp.dataset.ch]=Number(inp.value)||0; renderGoal(); save(); };
+  });
+  $("#roles").innerHTML = Object.keys(AGENTS).filter(k=>k!=="seoggyu").map(id=>{
+    const a=AGENTS[id];
+    return `<div class="kv"><span class="k">${a.emoji} <b style="color:var(--text)">${esc(a.name)}</b></span><span class="v">${esc(a.role)}</span></div>`;
+  }).join("");
+
+  const items = CHANNELS.map(c=>({id:c.id, amount:Number(S.channels[c.id])||0}));
+  const total = items.reduce((s,i)=>s+i.amount,0);
+  $("#roles").insertAdjacentHTML("beforeend",
+    `<div class="kv"><span class="k">이번 달 합계</span><span class="v">${total.toLocaleString("ko-KR")}만 원 / 1,000만 원</span></div>`);
+}
+
+async function saveChannels(){
+  if(!ready()){ askCode(); return; }
+  const items = CHANNELS.map(c=>({id:c.id, name:c.name, amount:Number(S.channels[c.id])||0}));
+  try{
+    await publish({kind:"channel", from:meIs(), items});
+    toast("채널 현황을 DB에 저장했어요");
+  }catch(e){ toast("저장 실패: "+e.message); }
+}
+
+/* ---------------- 렌더: 회의 ---------------- */
+function renderMeetings(){
+  const host=$("#mList");
+  const list = S.meetings.slice().sort((a,b)=> (a.state==="done"?1:0)-(b.state==="done"?1:0) || b.ts-a.ts);
+  let html = list.map(m=>{
+    const a = AGENTS[m.owner] || null;
+    const phase = {round1:"1바퀴 보고", round2:"2바퀴 수정안", decision:"결론"}[m.phase]||"안건";
+    return `<div class="row">
+      <span class="pill ${m.state==="done"?"done":"do"}">${esc(phase)}</span>
+      <div class="g">
+        <div class="ttl">${esc(m.title)}</div>
+        <div class="sub">${a?a.emoji+" "+esc(a.name):"담당 미정"} · ${ago(m.ts)}</div>
+        ${m.text?`<div class="body">${linkify(m.text)}</div>`:""}
+        <div class="btnrow">
+          <button class="btn sm" data-mt="${m.id}">${m.state==="done"?"↩️ 되돌리기":"✅ 완료"}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+  if(S.tasks.length){
+    html += `<h2 class="sec">📋 실행 항목</h2>`;
+    html += S.tasks.slice().reverse().map(t=>{
+      const a = AGENTS[t.owner] || null;
+      return `<div class="row"><span class="pill ${t.state==="완료"?"done":"open"}">${esc(t.state)}</span>
+        <div class="g"><div class="ttl">${esc(t.title)}</div>
+        <div class="sub">${a?a.emoji+" "+esc(a.name):"담당 미정"}${t.due?" · 기한 "+esc(t.due):""}</div></div></div>`;
+    }).join("");
+  }
+  if(!html) html = `<div class="empty">안건이 없습니다. ‘＋ 안건 추가’로 첫 안건을 올려 보세요.</div>`;
+  host.innerHTML = html;
+  host.querySelectorAll("[data-mt]").forEach(b=>b.onclick=async()=>{
+    const m = S.meetings.find(x=>x.id===b.dataset.mt); if(!m) return;
+    m.state = (m.state==="done") ? "open" : "done";
+    renderMeetings(); save();
+    if(ready()) publish({kind:"meeting", id:m.id, title:m.title, phase:m.phase, owner:m.owner, text:m.text, state:m.state}).catch(()=>{});
+  });
+}
+
+function addMeeting(){
+  const title = prompt("안건 제목 (예: 티스토리 발행 주기 조정)");
+  if(!title) return;
+  const text = prompt("내용·보고 (비워도 됩니다)")||"";
+  const m = {id:"m-"+Date.now(), title, text, phase:"round1", owner:S.me, state:"open", ts:Date.now()};
+  S.meetings.push(m); renderMeetings(); save();
+  if(ready()) publish({kind:"meeting", id:m.id, title, text, phase:"round1", owner:S.me, state:"open"}).catch(()=>{});
+}
+
+function meetingSummary(){
+  const open = S.meetings.filter(m=>m.state!=="done");
+  if(!open.length){ toast("정리할 안건이 없습니다"); return; }
+  const txt = "[피클 합동 비서실 · 결정사항]\n" + open.map((m,i)=>{
+    const a=AGENTS[m.owner]; const phase={round1:"보고",round2:"수정안",decision:"결론"}[m.phase]||"안건";
+    return (i+1)+". ["+phase+"] "+m.title+(a?" (담당 "+a.name+")":"")+(m.text?"\n   → "+m.text.replace(/\n/g," "):"");
+  }).join("\n");
+  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>toast("결정사항을 복사했어요"),()=>prompt("복사하세요",txt)); }
+  else prompt("복사하세요", txt);
+  const t=$("#input"); if(t && !t.value){ t.value = txt; autosize(t); }
+}
+
+/* ---------------- 설정/코드 ---------------- */
+function askCode(){
+  const v = prompt("초대 코드(office code)를 붙여 넣으세요.\n비서실 공유 메모에 있는 영문·숫자 조합입니다.", S.topic||"");
+  if(!v) return;
+  S.topic = v.trim().replace(/[^A-Za-z0-9_\-]/g,"").slice(0,60);
+  save(); paintDbInfo(); connect();
+  toast("연결을 시작합니다");
+}
+
+function myUrl(){
+  return location.origin+location.pathname+"#t="+encodeURIComponent(S.topic||"");
+}
+
+function paintSettings(){
+  paintDbInfo();
+  $("#meRow").innerHTML = Object.keys(AGENTS).map(id=>
+    `<button class="btn ${S.me===id?"pri":""}" data-me="${id}">${AGENTS[id].emoji} ${esc(AGENTS[id].name)}</button>`).join("");
+  $("#meRow").querySelectorAll("[data-me]").forEach(b=>b.onclick=()=>{
+    S.me=b.dataset.me; save(); paintSettings(); renderLog(); beat("online");
+  });
+  const code = S.topic || "YOUR_OFFICE_CODE";
+  $("#apiSnippet").textContent =
+`# ① 읽기 (최근 1시간, NDJSON)
+curl -s "https://ntfy.sh/${code}/json?poll=1&since=1h"
+
+# ② 쓰기 (JSON 한 줄)
+curl -s -d '{"v":1,"kind":"chat","from":"oni","name":"온이","to":["seoggyu"],"text":"보고 완료: 티스토리 2편 발행"}' \\
+     -H "Content-Type: text/plain" "https://ntfy.sh/${code}"
+# 답장은 from에 내 id(oni|biseo3|seuledeu|pickle), to에 ["seoggyu"] 또는 ["all"]`;
+  $("#schemaSnippet").textContent =
+`chat    {"kind":"chat","from":"oni","name":"온이","text":"…","to":["seoggyu"],"ts":1720000000000}
+status  {"kind":"status","from":"oni","state":"working","task":"티스토리 2편 발행","progress":60}
+task    {"kind":"task","id":"t-1","title":"살림앤트립 2편","owner":"oni","due":"11-28","state":"진행"}
+meeting {"kind":"meeting","id":"m-1","title":"발행 주기 조정","phase":"round1","owner":"oni","text":"…","state":"open"}
+channel {"kind":"channel","items":[{"id":"tistory","amount":120},{"id":"naver","amount":80}]}
+# state 값: online | working | busy | meeting | rest | offline`;
+}
+
+/* ---------------- 연결 테스트 ---------------- */
+async function testConn(){
+  if(!ready()){ askCode(); return; }
+  toast("테스트 메시지를 보내는 중…");
+  try{
+    const saved = await publish({kind:"chat", from:meIs(), name:meName(), text:"🔍 연결 테스트 ("+hhmm(Date.now())+")", to:[]});
+    seenIds.add(saved.id);
+    S.log.push({id:saved.id, ts:saved.ts||Date.now(), kind:"chat", from:meIs(), name:meName(), text:"🔍 연결 테스트", to:[]});
+    renderLog(); save();
+    await new Promise(r=>setTimeout(r,900));
+    await pollOnce();
+    toast(connState==="on" ? "✅ 쓰기·읽기 모두 정상" : "쓰기는 됐지만 읽기가 지연됩니다");
+  }catch(e){ toast("❌ 실패: "+e.message); }
+}
+
+/* ---------------- 내비 ---------------- */
+function go(tab){
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("sel", b.dataset.tab===tab));
+  document.querySelectorAll("main section").forEach(s=>s.classList.toggle("sel", s.id==="tab-"+tab));
+  if(tab==="chat"){ renderLog(); }
+  if(tab==="channels"){ renderChannels(); renderGoal(); }
+  if(tab==="meeting"){ renderMeetings(); }
+  if(tab==="setup"){ paintSettings(); }
+  window.scrollTo({top:0});
+}
+
+/* ---------------- 소리 ---------------- */
+let actx=null;
+function beep(){
+  if(!S.sound) return;
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(), g=actx.createGain();
+    o.connect(g); g.connect(actx.destination);
+    o.frequency.value=880; g.gain.value=0.05;
+    o.start(); o.stop(actx.currentTime+0.08);
+  }catch(e){}
+}
+
+/* ---------------- 초기화 ---------------- */
+function boot(){
+  const m = /#t=([A-Za-z0-9_\-]+)/.exec(location.hash);
+  if(m && m[1]){ S.topic = m[1]; save(); }
+
+  document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.tab));
+  document.querySelectorAll("[data-quick]").forEach(b=>b.onclick=()=>quick(b.dataset.quick));
+  $("#askAll").onclick = ()=>quick("report");
+  $("#sendBtn").onclick = send;
+  $("#input").addEventListener("input", e=>autosize(e.target));
+  $("#input").addEventListener("keydown", e=>{
+    if(e.key==="Enter" && !e.shiftKey && !e.isComposing){ e.preventDefault(); send(); }
+  });
+  document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{
+    const t=$("#input"); const cur=t.value; const at=t.selectionStart||cur.length;
+    t.value = cur.slice(0,at)+b.dataset.m+" "+cur.slice(at);
+    t.focus(); t.selectionStart=t.selectionEnd = at + b.dataset.m.length+1; autosize(t);
+  });
+  $("#chSave").onclick = saveChannels;
+  $("#mNew").onclick = addMeeting;
+  $("#mCall").onclick = ()=>{ go("chat"); quick("meeting"); };
+  $("#mSummary").onclick = meetingSummary;
+  $("#btnTest").onclick = testConn;
+  $("#btnCode").onclick = askCode;
+  $("#btnCopyUrl").onclick = ()=>{
+    if(!S.topic){ askCode(); return; }
+    const u = myUrl();
+    if(navigator.clipboard) navigator.clipboard.writeText(u).then(()=>toast("접속 주소를 복사했어요"),()=>prompt("복사하세요",u));
+    else prompt("복사하세요", u);
+  };
+  $("#btnCopyApi").onclick = ()=>{
+    const t=$("#apiSnippet").textContent;
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(()=>toast("명령을 복사했어요"),()=>{});
+  };
+  $("#btnExport").onclick = ()=>{
+    const blob = new Blob([JSON.stringify({topic:S.topic, exported:new Date().toISOString(), log:S.log,
+      channels:S.channels, meetings:S.meetings, status:S.status}, null, 2)], {type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="pickle-office-"+dayKey(Date.now())+".json";
+    a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
+    toast("내보냈어요 (downloads 폴더)");
+  };
+  $("#btnClear").onclick = ()=>{
+    if(!confirm("이 기기에 저장된 대화·상태를 지웁니다. 서버(12시간)에는 남아 있어 다시 받아옵니다. 계속할까요?")) return;
+    S.log=[]; S.status={}; S.meetings=[]; S.tasks=[]; seenIds.clear(); save();
+    renderLog(); renderDesks(); renderMeetings(); paintDbInfo(); toast("지웠습니다");
+  };
+
+  renderFilters(); renderDesks(); renderLog(); renderChannels(); renderGoal(); renderMeetings(); renderRecent();
+  paintSettings(); setConn(S.topic?"idle":"off");
+  if(ready()) connect();
+  else setTimeout(askCode, 400);
+
+  setInterval(()=>{ renderDesks(); paintDbInfo(); }, 60000);
+}
+
+document.addEventListener("DOMContentLoaded", boot);
+</script>
+</body>
+</html>
