@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#10131a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="피클 비서실">
 <title>🏢 피클 합동 비서실</title>
 <style>
 :root{
@@ -345,7 +349,7 @@ const DEFAULT = { me:"seoggyu", topic:"", log:[], status:{}, tasks:[], meetings:
                   channels:{}, seen:0, filter:"all", sound:true };
 
 let S = load();
-let es = null, pollTimer = null, lastRx = 0, unread = 0, connState = "idle";
+let es = null, pollTimer = null, lastRx = 0, unread = 0, connState = "idle", booted = false;
 const seenIds = new Set(S.log.map(m => m.id).filter(Boolean));
 
 /* ---------------- 저장 ---------------- */
@@ -423,7 +427,7 @@ function ingest(raw){
   if(o.kind === "chat"){
     S.log.push({id, ts, kind:"chat", from:o.from||"guest", name:o.name|| (AGENTS[o.from]||{}).name || "외부",
                 text:String(o.text||""), to:Array.isArray(o.to)?o.to:[]});
-    if(o.from !== meIs()){ unread++; beep(); }
+    if(o.from !== meIs() && booted){ unread++; beep(); }
     renderLog(); renderDesks(); renderRecent(); paintNav();
   } else if(o.kind === "status"){
     S.status[o.from||"guest"] = {state:o.state||"working", task:o.task||"", ts, progress:o.progress};
@@ -470,6 +474,7 @@ function connect(){
   disconnect();
   if(!ready()){ setConn("off"); return; }
   pollOnce().then(()=>{
+    setTimeout(()=>{ booted = true; }, 1500);
     try{
       es = new EventSource(BASE+"/"+encodeURIComponent(S.topic)+"/sse?since=10m");
       es.onopen = ()=> setConn("on");
@@ -603,7 +608,7 @@ function renderLog(){
   if(S.filter==="mention"){
     list = list.filter(m=> m.from!==meIs() && (mentionsOf(m.text).includes(meIs()) || mentionsOf(m.text).includes("all")));
   } else if(S.filter!=="all"){
-    list = list.filter(m=> m.from===S.filter);
+    list = list.filter(m=> m.from===S.filter || mentionsOf(m.text).includes(S.filter));
   }
   if(!list.length){
     host.innerHTML = `<div class="empty">${S.filter==="all"?"아직 대화가 없습니다. 아래에 <b>@온이 안녕</b> 처럼 보내 보세요.":"이 조건의 대화가 없습니다."}</div>`;
